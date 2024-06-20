@@ -1,19 +1,46 @@
+"use client";
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase/config";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-  title: "Project Base",
-  description: "Study - FullStack",
-};
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+  const [userSession, setUserSession] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const session = sessionStorage.getItem("user");
+      setUserSession(session || "");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      sessionStorage.setItem("user", user.uid);
+      setUserSession(user.uid);
+    } else {
+      sessionStorage.removeItem("user");
+      setUserSession("");
+    }
+  }, [user]);
+
+  if (!user && !userSession) {
+    router.push("/sign-in");
+  }
+  
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
