@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import openDB from "../configdb";
 
 const inter = Inter({ subsets: ["latin"] });
-
-openDB();
 
 export const metadata: Metadata = {
   title: "Project Base",
