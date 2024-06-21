@@ -8,7 +8,7 @@ export default function HomePage() {
   const router = useRouter();
   return (
     <div>
-      <h1>Login realizado</h1>
+      <h1>Login success</h1>
       <button
         className="cursor-pointer"
         onClick={() => {

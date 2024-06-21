@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
@@ -17,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [user] = useAuthState(auth);
-  const router = useRouter();
+  const router = typeof window !== "undefined" ? useRouter() : null; // Ensure useRouter is only called on the client side
   const [userSession, setUserSession] = useState<string>("");
 
   useEffect(() => {
@@ -37,10 +36,12 @@ export default function RootLayout({
     }
   }, [user]);
 
-  if (!user && !userSession) {
-    router.push("/sign-in");
-  }
-  
+  useEffect(() => {
+    if (!user && !userSession && router) {
+      router.push("/sign-in");
+    }
+  }, [user, userSession, router]);
+
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
