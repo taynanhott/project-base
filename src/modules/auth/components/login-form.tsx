@@ -1,4 +1,4 @@
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -6,11 +6,11 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import Link from 'next/link';
-import AuthActions from '../actions/auth-actions';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
+import AuthActions from "../actions/auth-actions";
 
 export default function LoginForm() {
   return (
@@ -36,12 +36,19 @@ export default function LoginForm() {
           <Button type="submit">Sign In</Button>
           <Link
             href="/portal/sign-up"
-            className={buttonVariants({ variant: 'link' })}
+            className={buttonVariants({ variant: "link" })}
           >
             Create Account
           </Link>
         </CardFooter>
       </form>
+      <Button
+        onClick={() => {
+          AuthActions.loginGoogle;
+        }}
+      >
+        Sign In with Google
+      </Button>
     </Card>
   );
 }
