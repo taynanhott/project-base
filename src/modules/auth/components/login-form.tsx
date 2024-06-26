@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import AuthActions from "../actions/auth-actions";
-import LoginGoogleForm from "./login-form-google";
+import LoginGoogleForm from "./login-google";
 
 export default function LoginForm() {
   return (
@@ -34,7 +34,7 @@ export default function LoginForm() {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button type="submit">Sign In</Button>
+          <Button type="submit" className="w-2/3">Sign In</Button>
           <Link
             href="/portal/sign-up"
             className={buttonVariants({ variant: "link" })}

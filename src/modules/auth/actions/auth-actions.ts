@@ -2,8 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import AuthService from "../services/auth-service";
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
-import { auth } from "@/firebase/config";
+import { User } from "firebase/auth";
 
 const prisma = new PrismaClient();
 
@@ -62,7 +61,7 @@ async function loginGoogle(user: User) {
   "use server";
 
   await AuthService.createSessionToken({
-    sub: user.providerId,
+    sub: user.uid,
     name: user.displayName,
     email: user.email,
   });
