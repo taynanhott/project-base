@@ -2,9 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import AuthService from "../services/auth-service";
-import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
+import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
 import { auth } from "@/firebase/config";
-import { useState } from "react";
 
 const prisma = new PrismaClient();
 
@@ -59,23 +58,8 @@ async function login(formData: FormData) {
   redirect("/portal");
 }
 
-async function loginGoogle() {
+async function loginGoogle(user: User) {
   "use server";
-  const [user, setUser] = useState<User>({} as User);
-
-  const provider = new GoogleAuthProvider();
-
-  await signInWithPopup(auth, provider)
-    .then((result) => {
-      setUser(result.user);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  if (!user) {
-    redirect("/portal/sign-in");
-  }
 
   await AuthService.createSessionToken({
     sub: user.providerId,

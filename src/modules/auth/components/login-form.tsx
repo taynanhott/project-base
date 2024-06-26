@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import AuthActions from "../actions/auth-actions";
+import LoginGoogleForm from "./login-form-google";
 
 export default function LoginForm() {
   return (
@@ -42,13 +43,7 @@ export default function LoginForm() {
           </Link>
         </CardFooter>
       </form>
-      <Button
-        onClick={() => {
-          AuthActions.loginGoogle;
-        }}
-      >
-        Sign In with Google
-      </Button>
+      <LoginGoogleForm />
     </Card>
   );
 }
