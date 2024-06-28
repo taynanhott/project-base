@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -10,17 +13,44 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import AuthActions from "../actions/auth-actions";
 import LoginGoogleForm from "./login-google";
+import { AlertPopUp } from "@/components/ui/alert";
 
-export default function LoginForm() {
+interface LoginFormProps {
+  login: (formData: FormData) => Promise<boolean | void>;
+  loginGoogle: (uid: string, name: string, email: string) => Promise<boolean | void>;
+}
+
+export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
+  const [showAlert, setShowAlert] = useState(false);
+
+  async function signIn(formData: FormData) {
+    try {
+      await login(formData).then((response) => {
+        if(response){
+          setShowAlert(true);
+        }else{
+          setShowAlert(false);
+        }
+      });
+    } catch (error) {
+      console.error("failed sigin with email and password:", error);
+      setShowAlert(true);
+    }
+  }
+
   return (
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Project Name</CardTitle>
         <CardDescription>Log in to continue.</CardDescription>
       </CardHeader>
-      <form action={AuthActions.login}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          signIn(new FormData(e.currentTarget));
+        }}
+      >
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
@@ -34,7 +64,9 @@ export default function LoginForm() {
           </div>
         </CardContent>
         <CardFooter className="flex justify-between">
-          <Button type="submit" className="w-2/3">Sign In</Button>
+          <Button type="submit" className="w-2/3 button">
+            Sign In
+          </Button>
           <Link
             href="/portal/sign-up"
             className={buttonVariants({ variant: "link" })}
@@ -43,7 +75,8 @@ export default function LoginForm() {
           </Link>
         </CardFooter>
       </form>
-      <LoginGoogleForm loginGoogle={AuthActions.loginGoogle} />
+      {showAlert && <AlertPopUp />}
+      <LoginGoogleForm loginGoogle={loginGoogle} />
     </Card>
   );
 }

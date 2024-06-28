@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { redirect } from "next/navigation";
 import AuthService from "../services/auth-service";
-import { User } from "firebase/auth";
 
 const prisma = new PrismaClient();
 
@@ -15,15 +14,17 @@ async function createAccount(formData: FormData) {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashPassword,
-    },
-  });
-
-  redirect("/portal/sign-in");
+  await prisma.user
+    .create({
+      data: {
+        name,
+        email,
+        password: hashPassword,
+      },
+    })
+    .then(() => {
+      redirect("/portal/sign-in");
+    });
 }
 
 async function login(formData: FormData) {
@@ -39,13 +40,13 @@ async function login(formData: FormData) {
   });
 
   if (!user) {
-    redirect("/portal/sign-in");
+    return true;
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    redirect("/portal/sign-in");
+    return true;
   }
 
   await AuthService.createSessionToken({
@@ -57,13 +58,13 @@ async function login(formData: FormData) {
   redirect("/portal");
 }
 
-async function loginGoogle(user: User) {
+async function loginGoogle(uid: string, name: string, email: string) {
   "use server";
 
   await AuthService.createSessionToken({
-    sub: user.uid,
-    name: user.displayName,
-    email: user.email,
+    sub: uid,
+    name: name,
+    email: email,
   });
 
   redirect("/portal");

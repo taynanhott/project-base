@@ -1,18 +1,47 @@
 "use client";
 
-import { GoogleAuthProvider, User, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/firebase/config";
-import AuthActions from "../actions/auth-actions";
+import { useState } from "react";
+import { AlertPopUp } from "@/components/ui/alert";
 
-export default function LoginGoogleForm({ loginGoogle }: { loginGoogle: (user: User) => Promise<void> }) {
-  function signInWithGoogle() {
+interface LoginGoogleFormProps {
+  loginGoogle: (
+    uid: string,
+    name: string,
+    email: string
+  ) => Promise<boolean | void>;
+}
+
+export default function LoginGoogleForm({ loginGoogle }: LoginGoogleFormProps) {
+  const [showAlert, setShowAlert] = useState(false);
+
+  async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
 
-    signInWithPopup(auth, provider).then((result) => {
-      console.log(result.user);
-      loginGoogle(result.user);
-    });
+    try {
+      const result = await signInWithPopup(auth, provider);
+
+      if (result) {
+        await loginGoogle(
+          result.user.uid as string,
+          result.user.displayName as string,
+          result.user.email as string
+        ).then((response) => {
+          if (response) {
+            setShowAlert(true);
+          } else {
+            setShowAlert(false);
+          }
+        });
+      } else {
+        setShowAlert(true);
+      }
+    } catch (error) {
+      console.error("failed sigin with Google account:", error);
+      setShowAlert(true);
+    }
   }
 
   return (
@@ -20,6 +49,7 @@ export default function LoginGoogleForm({ loginGoogle }: { loginGoogle: (user: U
       <Button type="button" onClick={signInWithGoogle} className="button">
         Sign In with Google
       </Button>
+      {showAlert && <AlertPopUp />}
     </div>
   );
 }
