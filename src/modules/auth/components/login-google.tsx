@@ -3,7 +3,7 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/firebase/config";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AlertPopUp } from "@/components/ui/alert";
 
 interface LoginGoogleFormProps {
@@ -17,6 +17,26 @@ interface LoginGoogleFormProps {
 export default function LoginGoogleForm({ loginGoogle }: LoginGoogleFormProps) {
   const [showAlert, setShowAlert] = useState(false);
 
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  function alertHide() {
+    setShowAlert(true);
+
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }
+
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider();
 
@@ -29,18 +49,18 @@ export default function LoginGoogleForm({ loginGoogle }: LoginGoogleFormProps) {
           result.user.displayName as string,
           result.user.email as string
         ).then((response) => {
-          if (response) {
-            setShowAlert(true);
-          } else {
+          if (response == undefined) {
             setShowAlert(false);
+          } else {
+            alertHide();
           }
         });
       } else {
-        setShowAlert(true);
+        alertHide();
       }
     } catch (error) {
       console.error("failed sigin with Google account:", error);
-      setShowAlert(true);
+      alertHide();
     }
   }
 

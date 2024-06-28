@@ -2,7 +2,7 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
-import { Dialog, DialogContent, DialogTrigger } from "./dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
 import { Button } from "./button";
 
 const alertVariants = cva(
@@ -59,22 +59,9 @@ const AlertDescription = React.forwardRef<
 AlertDescription.displayName = "AlertDescription";
 
 function AlertPopUp() {
-  const [open, setOpen] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setOpen(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <Dialog open={open}>
+    <Dialog open={true}>
+      <DialogTitle></DialogTitle>
       <DialogContent className="sm:max-w-[400px] w-full p-6 bg-background rounded-lg shadow-lg">
         <div className="flex flex-col items-center justify-center gap-4">
           <div className="space-y-2 text-center">
@@ -84,7 +71,7 @@ function AlertPopUp() {
             </p>
           </div>
           <div>
-            <Button variant="ghost" onClick={handleClose} className="w-full">
+            <Button variant="ghost" className="w-full">
               Close
             </Button>
           </div>

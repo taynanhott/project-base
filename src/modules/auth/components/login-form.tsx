@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
@@ -18,24 +18,48 @@ import { AlertPopUp } from "@/components/ui/alert";
 
 interface LoginFormProps {
   login: (formData: FormData) => Promise<boolean | void>;
-  loginGoogle: (uid: string, name: string, email: string) => Promise<boolean | void>;
+  loginGoogle: (
+    uid: string,
+    name: string,
+    email: string
+  ) => Promise<boolean | void>;
 }
 
 export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
   const [showAlert, setShowAlert] = useState(false);
 
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+
+  function alertHide() {
+    setShowAlert(true);
+
+    const timer = setTimeout(() => {
+      setShowAlert(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }
+
   async function signIn(formData: FormData) {
     try {
       await login(formData).then((response) => {
-        if(response){
-          setShowAlert(true);
-        }else{
+        if (response == undefined) {
           setShowAlert(false);
+        } else {
+          alertHide();
         }
       });
     } catch (error) {
       console.error("failed sigin with email and password:", error);
-      setShowAlert(true);
+      alertHide();
     }
   }
 

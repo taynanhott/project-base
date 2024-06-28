@@ -40,13 +40,13 @@ async function login(formData: FormData) {
   });
 
   if (!user) {
-    return true;
+    return false;
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
-    return true;
+    return false;
   }
 
   await AuthService.createSessionToken({
@@ -55,7 +55,7 @@ async function login(formData: FormData) {
     email: user.email,
   });
 
-  redirect("/portal");
+  return redirect("/portal");
 }
 
 async function loginGoogle(uid: string, name: string, email: string) {
@@ -67,7 +67,7 @@ async function loginGoogle(uid: string, name: string, email: string) {
     email: email,
   });
 
-  redirect("/portal");
+  return redirect("/portal");
 }
 
 const AuthActions = {
