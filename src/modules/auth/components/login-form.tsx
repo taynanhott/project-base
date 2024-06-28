@@ -43,7 +43,7 @@ export default function LoginForm() {
           </Link>
         </CardFooter>
       </form>
-      <LoginGoogleForm />
+      <LoginGoogleForm loginGoogle={AuthActions.loginGoogle} />
     </Card>
   );
 }
