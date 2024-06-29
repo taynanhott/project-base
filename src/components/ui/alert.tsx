@@ -70,11 +70,6 @@ function AlertPopUp() {
               Email or password incorrect.
             </p>
           </div>
-          <div>
-            <Button variant="ghost" className="w-full">
-              Close
-            </Button>
-          </div>
         </div>
       </DialogContent>
     </Dialog>

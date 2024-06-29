@@ -1,4 +1,3 @@
-import UsersList from '@/modules/users/components/users-list';
 import Link from 'next/link';
 
 export default function PortalPage() {
