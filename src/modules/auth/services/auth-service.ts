@@ -1,5 +1,6 @@
-import * as jose from 'jose';
-import { cookies } from 'next/headers';
+import * as jose from "jose";
+import { cookies } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
 
 async function openSessionToken(token: string) {
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
@@ -12,21 +13,29 @@ async function createSessionToken(payload = {}) {
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
   const session = await new jose.SignJWT(payload)
     .setProtectedHeader({
-      alg: 'HS256',
+      alg: "HS256",
     })
-    .setExpirationTime('1d')
+    .setExpirationTime("10 sec from now")
+    // .setExpirationTime("1d")
     .sign(secret);
   const { exp, role } = await openSessionToken(session);
 
-  cookies().set('session', session, {
+  cookies().set("session", session, {
     expires: (exp as number) * 1000,
-    path: '/',
+    path: "/",
     httpOnly: true,
   });
 }
 
+
+export async function getSession() {
+  const session = cookies().get("session")?.value;
+  if (!session) return null;
+  return await openSessionToken(session);
+}
+
 async function isSessionValid() {
-  const sessionCookie = cookies().get('session');
+  const sessionCookie = cookies().get("session");
 
   if (sessionCookie) {
     const { value } = sessionCookie;
@@ -40,7 +49,7 @@ async function isSessionValid() {
 }
 
 function destroySession() {
-  cookies().delete('session');
+  cookies().delete("session");
 }
 
 const AuthService = {

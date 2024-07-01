@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import LoginGoogleForm from "./login-google"
-import { useEffect, useState } from "react"
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import LoginGoogleForm from "./login-google";
+import { useEffect, useState } from "react";
 import { AlertPopUp } from "@/components/ui/alert";
 
 interface LoginFormProps {
@@ -59,12 +59,15 @@ export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
     <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-md space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-foreground">
+          <h2 className="pointer-events-none mt-6 text-center text-3xl font-bold tracking-tight text-foreground">
             Project Name
           </h2>
           <p className="mt-2 text-center text-sm text-muted-foreground">
-            or{" "}
-            <Link href="/portal/sign-up" className="font-medium text-primary hover:text-primary/90" prefetch={false}>
+            <Link
+              href="/portal/sign-up"
+              className="font-medium text-primary hover:text-primary/90"
+              prefetch={false}
+            >
               Create Account
             </Link>
           </p>
@@ -76,7 +79,10 @@ export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
           }}
         >
           <div>
-            <Label htmlFor="email" className="block text-sm font-medium text-muted-foreground">
+            <Label
+              htmlFor="email"
+              className="block text-sm font-medium text-muted-foreground"
+            >
               Email
             </Label>
             <div className="mt-1">
@@ -87,12 +93,15 @@ export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
                 autoComplete="email"
                 required
                 className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
-                placeholder="test@email.com"
+                placeholder="example@email.com"
               />
             </div>
           </div>
           <div>
-            <Label htmlFor="password" className="block mt-4 text-sm font-medium text-muted-foreground">
+            <Label
+              htmlFor="password"
+              className="block mt-4 text-sm font-medium text-muted-foreground"
+            >
               Password
             </Label>
             <div className="mt-1">
@@ -118,5 +127,5 @@ export default function LoginForm({ login, loginGoogle }: LoginFormProps) {
         </form>
       </div>
     </div>
-  )
+  );
 }

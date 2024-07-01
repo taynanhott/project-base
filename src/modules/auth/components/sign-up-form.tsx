@@ -1,53 +1,96 @@
-import { Button, buttonVariants } from '@/components/ui/button';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import Link from 'next/link';
-import AuthActions from '../actions/auth-actions';
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import AuthActions from "../actions/auth-actions";
 
 export default function SignUpForm() {
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>Project Name</CardTitle>
-        <CardDescription>
-          Fill in the fields below to create an account.
-        </CardDescription>
-      </CardHeader>
-      <form action={AuthActions.createAccount}>
-        <CardContent>
-          <div className="grid w-full items-center gap-4">
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" required />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-md space-y-8">
+        <div>
+          <h2 className="pointer-events-none mt-6 text-center text-3xl font-bold tracking-tight text-foreground">
+            Project Name
+          </h2>
+          <p className="pointer-events-none mt-2 text-center text-sm text-muted-foreground">
+              Fill in the fields below to create an account.
+          </p>
+        </div>
+        <form action={AuthActions.createAccount}>
+          <div>
+            <Label
+              htmlFor="name"
+              className="block text-sm font-medium text-muted-foreground"
+            >
+              Name
+            </Label>
+            <div className="mt-1">
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                minLength={3}
+                required
+                className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                placeholder="Your name"
+              />
             </div>
           </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button type="submit">Create Account</Button>
+          <div>
+            <Label
+              htmlFor="email"
+              className="block mt-4 text-sm font-medium text-muted-foreground"
+            >
+              Email
+            </Label>
+            <div className="mt-1">
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                minLength={7}
+                required
+                className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                placeholder="example@email.com"
+              />
+            </div>
+          </div>
+          <div>
+            <Label
+              htmlFor="password"
+              className="block mt-4 text-sm font-medium text-muted-foreground"
+            >
+              Password
+            </Label>
+            <div className="mt-1">
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                minLength={6}
+                required
+                className="block w-full appearance-none rounded-md border border-input bg-background px-3 py-2 placeholder-muted-foreground shadow-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary sm:text-sm"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+          <Button
+            type="submit"
+            className="flex w-full justify-center mt-4 mb-2 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            Create Account
+          </Button>
           <Link
             href="/portal/sign-in"
-            className={buttonVariants({ variant: 'link' })}
+            className={`flex justify-center font-medium text-primary hover:text-primary/90`}
           >
             Login my account
           </Link>
-        </CardFooter>
-      </form>
-    </Card>
+        </form>
+      </div>
+    </div>
   );
 }
