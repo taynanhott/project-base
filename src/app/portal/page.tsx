@@ -6,11 +6,11 @@ export default async function PortalPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-background px-4 py-12 sm:px-6 lg:px-8">
-      <div className="max-w-md text-center space-y-4">
+      <div className="pointer-events-none max-w-md text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tighter text-foreground">
           Wellcome!
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="pointer-events-none text-muted-foreground text-lg">
           We are happy to have you here.
           <pre className="text-left">{JSON.stringify(session, null, 2)}</pre>
         </p>
