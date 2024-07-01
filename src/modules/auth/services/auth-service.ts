@@ -1,6 +1,5 @@
 import * as jose from "jose";
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
 
 async function openSessionToken(token: string) {
   const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
@@ -15,8 +14,7 @@ async function createSessionToken(payload = {}) {
     .setProtectedHeader({
       alg: "HS256",
     })
-    .setExpirationTime("10 sec from now")
-    // .setExpirationTime("1d")
+    .setExpirationTime("1d")
     .sign(secret);
   const { exp, role } = await openSessionToken(session);
 
